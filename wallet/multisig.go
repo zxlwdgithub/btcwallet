@@ -108,6 +108,14 @@ func (w *Wallet) ImportP2SHRedeemScript(script []byte) (*btcutil.AddressScriptHa
 		}
 
 		p2shAddr = addrInfo.Address().(*btcutil.AddressScriptHash)
+
+		job := &RescanJob{ // zxl add
+			Addrs:      []btcutil.Address{p2shAddr},
+			OutPoints:  nil,
+			BlockStamp: *bs,
+		}
+		_ = w.SubmitRescan(job)
+
 		return nil
 	})
 	return p2shAddr, err
